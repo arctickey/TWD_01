@@ -60,5 +60,8 @@ result_together[,3] <- as.numeric(result_together[,3])
 ggplot(result_together, aes(x = Title, y = Average_score)) +
   geom_bar(stat = "identity") +
   facet_wrap(~ Test_part, nrow = 2) +
-  coord_cartesian(ylim=c(440,540))
+  coord_cartesian(ylim=c(440,540)) +
+  ggtitle("Średni wynik względem wykształcenia rodziców") +
+  xlab("Wykształcenie rodziców") +
+  ylab("Średni wynik")
   
