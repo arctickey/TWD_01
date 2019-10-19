@@ -33,10 +33,10 @@ dane_math1 <- average_scores2_math(dane_math)
 x <- as.matrix(select(dane_math1, -c(mean_math)) %>% select_if(is.numeric))
 y <- dane_math1$mean_math
 
-params = list('num_leaves'= 128,
+params = list('num_leaves'= 256,
   'objective'= 'reg:squarederror',
   'max_depth'=13,
-    'eta'= 0.03,
+  'eta'= 0.05,
   "boosting_type"="gbdt",
   "subsample"= 0.9,
   "bagging_seed"= 11,
