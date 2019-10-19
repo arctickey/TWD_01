@@ -46,4 +46,4 @@ params = list('num_leaves'= 128,
 
 model <- xgboost(data=x,label=y,params = params,nthread=-1,nrounds=10)
 importance_matrix <- xgb.importance(model=model)
-write.csv(importance_matrixFeature,"Cechy_xgboost.csv")
+write.csv(importance_matrix$Feature,"Cechy_xgboost.csv")
