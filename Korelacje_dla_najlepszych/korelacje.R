@@ -119,48 +119,48 @@ write.csv(corr_read1,file="Corr_read1.csv")
 
 
 
-dane_math <- average_scores(dane_math)
-dane_math <- select_if(dane_math,is.numeric)
+#dane_math <- average_scores(dane_math)
+#dane_math <- select_if(dane_math,is.numeric)
 
-dane_read <- average_scores(dane_read)
-dane_read<- select_if(dane_read,is.numeric)
+#dane_read <- average_scores(dane_read)
+#dane_read<- select_if(dane_read,is.numeric)
 
-dane_all<- average_scores(dane_all)
-dane_all <- select_if(dane_all,is.numeric)
+#dane_all<- average_scores(dane_all)
+#dane_all <- select_if(dane_all,is.numeric)
 
-dane_scie <- average_scores(dane_scie)
-dane_scie <- select_if(dane_scie,is.numeric)
+#dane_scie <- average_scores(dane_scie)
+#dane_scie <- select_if(dane_scie,is.numeric)
 
 
 #dane pomocnicze do zrobienia korelacji
-dane_pom_read<- select(dane_read, -c(MATH_AVR,READ_AVR,SCIE_AVR,ALL_AVR))
-dane_pom_math <- select(dane_math, -c(MATH_AVR,READ_AVR,SCIE_AVR,ALL_AVR))
-dane_pom_all <- select(dane_all, -c(MATH_AVR,READ_AVR,SCIE_AVR,ALL_AVR))
-dane_pom_scie <- select(dane_scie, -c(MATH_AVR,READ_AVR,SCIE_AVR,ALL_AVR))
+#dane_pom_read<- select(dane_read, -c(MATH_AVR,READ_AVR,SCIE_AVR,ALL_AVR))
+#dane_pom_math <- select(dane_math, -c(MATH_AVR,READ_AVR,SCIE_AVR,ALL_AVR))
+#dane_pom_all <- select(dane_all, -c(MATH_AVR,READ_AVR,SCIE_AVR,ALL_AVR))
+#dane_pom_scie <- select(dane_scie, -c(MATH_AVR,READ_AVR,SCIE_AVR,ALL_AVR))
 
 
 #korelacje z osobna dla kazdej z najlepszej grup w kazdym przedmiocie
-corr_matma <- cor(dane_math$MATH_AVR,dane_pom_math,use = "pairwise.complete.obs")
-corr_matma <- as.data.frame(x=corr_matma,colnames(dane_pom_math))
-corr_matma <- melt(sort(corr_matma,decreasing = TRUE))
+#corr_matma <- cor(dane_math$MATH_AVR,dane_pom_math,use = "pairwise.complete.obs")
+#corr_matma <- as.data.frame(x=corr_matma,colnames(dane_pom_math))
+#corr_matma <- melt(sort(corr_matma,decreasing = TRUE))
 
 
-corr_read <- cor(dane_read$READ_AVR,dane_pom_read,use = "pairwise.complete.obs")
-corr_read <- as.data.frame(x=corr_read,colnames(dane_pom_read))
-corr_read <- melt(sort(corr_read,decreasing = TRUE))
+#corr_read <- cor(dane_read$READ_AVR,dane_pom_read,use = "pairwise.complete.obs")
+#corr_read <- as.data.frame(x=corr_read,colnames(dane_pom_read))
+#corr_read <- melt(sort(corr_read,decreasing = TRUE))
 
 
-corr_scie <- cor(dane_scie$SCIE_AVR,dane_pom_scie,use = "pairwise.complete.obs")
-corr_scie <- as.data.frame(x=corr_scie,colnames(dane_pom_scie))
-corr_scie <- melt(sort(corr_scie,decreasing = TRUE))
+#corr_scie <- cor(dane_scie$SCIE_AVR,dane_pom_scie,use = "pairwise.complete.obs")
+#corr_scie <- as.data.frame(x=corr_scie,colnames(dane_pom_scie))
+#corr_scie <- melt(sort(corr_scie,decreasing = TRUE))
 
-corr_all <- cor(dane_all$ALL_AVR,dane_pom_all,use = "pairwise.complete.obs")
-corr_all <- as.data.frame(x=corr_all,colnames(dane_pom_all))
-corr_all <- melt(sort(corr_all,decreasing = TRUE))
+#corr_all <- cor(dane_all$ALL_AVR,dane_pom_all,use = "pairwise.complete.obs")
+#corr_all <- as.data.frame(x=corr_all,colnames(dane_pom_all))
+#corr_all <- melt(sort(corr_all,decreasing = TRUE))
 
 #zapisanie do csv, aby łatwiej było potem z tego korzystać
-write.csv(corr_math,file="Corr_math.csv")
-write.csv(corr_scie,file="Corr_scie.csv")
-write.csv(corr_all,file="Corr_all.csv")
-write.csv(corr_read,file="Corr_read.csv")
+#write.csv(corr_math,file="Corr_math.csv")
+#write.csv(corr_scie,file="Corr_scie.csv")
+#write.csv(corr_all,file="Corr_all.csv")
+#write.csv(corr_read,file="Corr_read.csv")
 
