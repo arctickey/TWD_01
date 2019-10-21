@@ -4,6 +4,8 @@ library(dplyr)
 #bierzemy pod uwage srednia z 3 kategorii: matematyka, czytanie oraz nauka
 
 best_in_all <- function(x, df){
+  #Podaj x (wartosc liczbowa np. 5), otrzymasz x% najlepszych wynikow
+  #Wprowadz ramke danych: df, z ktorej chcesz wybrac podgrupe
   
   #Obliczenie sredniej z plausible values dla kazdego ucznia
   #srednia pozostanie w kolumnie 'average_pv_math'
@@ -12,9 +14,3 @@ best_in_all <- function(x, df){
   return(result[1:floor(nrow(result)*(x/100)),])
 }
 
-#Podaj x (wartosc liczbowa np. 5), otrzymasz x% najlepszych wynikow
-#Wprowadz ramke danych: df, z ktorej chcesz wybrac podgrupe
-
-x <-
-df <-
-result <- best_in_all(x, df)

@@ -11,10 +11,3 @@ best_in_reading <- function(x, df){
   result <- result[order(result$average_pv_reading, decreasing = TRUE),]
   return(result[1:floor(nrow(result)*(x/100)),])
 }
-
-#Podaj x (wartosc liczbowa np. 5), otrzymasz x% najlepszych wynikow
-#Wprowadz ramke danych: df, z ktorej chcesz wybrac podgrupe
-
-x <- 
-df <-
-result <- best_in_reading(x, df)
