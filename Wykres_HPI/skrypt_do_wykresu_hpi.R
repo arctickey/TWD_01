@@ -1,0 +1,26 @@
+# wczytywanie danych o HPI 
+HPI <- read.csv("data_HPI.csv")
+HPI <- HPI[,-1]
+# wczytywanie danych o krajach 
+install.packages("countrycode")
+cod <- codelist
+cod_final<- cod[,c(2,5,36)]
+HPI <- HPI[,c(2,11)]
+HPI_COD <- merge(HPI,cod_final,by.x ="Country",by.y="country.name.en")
+
+## wprowadzanie i poprawki ramik z danymi pissa 
+dane <- haven::read_sas("../cy6_ms_cmb_stu_qqq.sas7bdat")
+dane <- select(dane, CNT,CNTSTUID,PV1MATH:PV10SCIE)
+dane <- best_in_all(10,dane)## ZMIEN W CELU ZMIANY DANYCH z pissa
+dane <- dane[,c(1,33)]
+
+dane_plot2 <- merge(dane,HPI_COD,by.x="CNT",by.y="iso3c")
+library(dplyr)
+## grupowanie danych po krajach 
+
+data_plot2<- dane_plot2 %>% group_by(CNT,Country,continent,Happy.Planet.Index) %>% summarise(mean_all_by_CNT=mean(average_pv_all))
+
+## rysowanie i zapisywanie wykresu 
+
+library(ggplot2)
+ggplot(data_plot2,aes(x=Happy.Planet.Index,y=mean_all_by_CNT,colour=continent))+geom_point()+stat_smooth(method = "gam",inherit.aes = FALSE,aes(x=Happy.Planet.Index,y=mean_all_by_CNT))
