@@ -1,4 +1,4 @@
-#Skrypt analizy wplywu dostepnosci tabletow na wyniki uczniow
+#Skrypt analizy wplywu zadowolenia z nauki na wyniki uczniow
 
 library(haven)
 library(dplyr)
@@ -9,12 +9,12 @@ library(reshape2)
 dane <- haven::read_sas("./cy6_ms_cmb_stu_qqq.sas7bdat")
 
 #Wybor kolumn: pytanie o liczbe komputerow oraz kolumny z wynikami
-df <- select(dane, ST012Q07NA, PV1MATH:PV10SCIE) %>%
-  filter(., !is.na(ST012Q07NA))
+df <- select(dane, ST094Q01NA, PV1MATH:PV10SCIE) %>%
+  filter(., !is.na(ST094Q01NA))
 
 #Oddzielnie dla kazdego przedmiotu liczymy srednie wyniki
-#w grupach osob w zaleznosci od liczby komputerow w domu
-means_math <- group_by(df, ST012Q07NA) %>%
+#w grupach osob w zaleznosci od udzielonej odpowiedzi na pytanie
+means_math <- group_by(df, ST094Q01NA) %>%
   summarise(mean_1 = mean(PV1MATH),
             mean_2 = mean(PV2MATH),
             mean_3 = mean(PV3MATH),
@@ -30,7 +30,7 @@ means_math <- rowwise(means_math[, -1]) %>%
   mutate(Mean = mean(mean_1:mean_10)) %>%
   select(Mean)
 
-means_read <- group_by(df, ST012Q07NA) %>%
+means_read <- group_by(df, ST094Q01NA) %>%
   summarise(mean_1 = mean(PV1READ),
             mean_2 = mean(PV2READ),
             mean_3 = mean(PV3READ),
@@ -47,7 +47,7 @@ means_read <- rowwise(means_read[, -1]) %>%
   select(Mean)
 
 
-means_scie <- group_by(df, ST012Q07NA) %>%
+means_scie <- group_by(df, ST094Q01NA) %>%
   summarise(mean_1 = mean(PV1SCIE),
             mean_2 = mean(PV2SCIE),
             mean_3 = mean(PV3SCIE),
@@ -63,17 +63,17 @@ means_scie <- rowwise(means_scie[, -1]) %>%
   mutate(Mean = mean(mean_1:mean_10)) %>%
   select(Mean)
 
-result <- cbind(c("0","1","2","3+"), means_math, means_read, means_scie)
-colnames(result) <- c("Tablets_number","Mean_math", "Mean_reading", "Mean_science")
+result <- cbind(c("strongly disagree","disagree","agree","strongly agree"), means_math, means_read, means_scie)
+colnames(result) <- c("opinion","Mean_math", "Mean_reading", "Mean_science")
 
-to_plot <- melt(result, id.vars = "Tablets_number")
+to_plot <- melt(result, id.vars = "opinion")
 
-ggplot(to_plot, aes(x=Tablets_number, y=value)) +
+ggplot(to_plot, aes(x=reorder(opinion, value), y=value)) +
   geom_bar(stat = "identity") +
   facet_wrap(~ variable) +
   ylab("Średni wynik") +
   coord_cartesian(ylim=c(300,550)) +
-  ggtitle("Wpływ dostępności do tabletów na średni wynik") +
-  xlab("Liczba tabletów w domu") +
-  ggsave("wykresy_pytania_kwestionariusz/liczba_tabletow.png",width = 18, height = 9)
+  xlab("Odpowiedź na pytanie") +
+  ggtitle("\"I generally have fun when I am learning\" średni wynik względem odpowiedzi") +
+  ggsave("wykresy_pytania_kwestionariusz/have_fun_learning.png",width = 18, height = 9)
 

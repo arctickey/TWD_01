@@ -78,4 +78,6 @@ ggplot(result_to_plot2, aes(x = reorder(CNT, value), y = value)) +
   theme(axis.text.x = element_text(angle = 90)) +
   ggtitle("Kraje z najwyższym odsetkiem geniuszy wśród badanych") +
   xlab("Kraj") +
-  ylab("Odsetek")
+  ylab("Odsetek") +
+  ggsave("wykresy_pytania_kwestionariusz/odsetek_geniuszy_kraje.png",width = 18, height = 9)
+

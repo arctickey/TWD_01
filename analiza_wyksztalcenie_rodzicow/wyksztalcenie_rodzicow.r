@@ -57,11 +57,13 @@ result_together <- rbind.data.frame(result_doctoral, result_bach_mast, result_po
 colnames(result_together) <- c("Title", "Test_part", "Average_score")
 result_together[,3] <- as.numeric(result_together[,3])
 
-ggplot(result_together, aes(x = Title, y = Average_score)) +
+ggplot(result_together, aes(x = reorder(Title, Average_score), y = Average_score)) +
   geom_bar(stat = "identity") +
   facet_wrap(~ Test_part, nrow = 2) +
-  coord_cartesian(ylim=c(440,540)) +
+  coord_cartesian(ylim=c(400,550)) +
   ggtitle("Średni wynik względem wykształcenia rodziców") +
   xlab("Wykształcenie rodziców") +
-  ylab("Średni wynik")
+  ylab("Średni wynik") +
+  ggsave("wykresy_pytania_kwestionariusz/wyksztalcenie_rodzicow.png",width = 18, height = 9)
+
   
