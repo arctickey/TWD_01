@@ -1,0 +1,48 @@
+---
+title: "Prezentacja_wykresów"
+output: pdf_document
+---
+
+```{r setup,out.width='100%',echo=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+knitr::include_graphics("./Wykres_hdi/best_allto_hdi.png")
+
+knitr::include_graphics("./Wykres_HPI/best_allto_HPI.png")
+
+knitr::include_graphics("./Wykres_SPEND_ON_EDU/all_EDU.png")
+
+knitr::include_graphics("./Wykresiki/best_all.png")
+
+knitr::include_graphics("./Wykresiki/best_math.png")
+
+knitr::include_graphics("./Wykresiki/best_read.png")
+
+knitr::include_graphics("./Wykresiki/best_science.png")
+
+knitr::include_graphics("./wykresy_pytania_kwestionariusz/enjoy_new_knowledge_odsetek.png")
+
+knitr::include_graphics("./wykresy_pytania_kwestionariusz/enjoy_new_knowledge.png")
+
+knitr::include_graphics("./wykresy_pytania_kwestionariusz/have_fun_learning.png")
+
+knitr::include_graphics("./wykresy_pytania_kwestionariusz/have_fun_odsetek.png")
+
+knitr::include_graphics("./wykresy_pytania_kwestionariusz/liczba_komputerow.png")
+
+knitr::include_graphics("./wykresy_pytania_kwestionariusz/liczba_ksiazek.png")
+
+knitr::include_graphics("./wykresy_pytania_kwestionariusz/liczba_tabletow.png")
+
+knitr::include_graphics("./wykresy_pytania_kwestionariusz/odsetek_geniuszy_kraje.png")
+
+knitr::include_graphics("./wykresy_pytania_kwestionariusz/rozklad_geeks_na_wyksztalcenie.png")
+
+knitr::include_graphics("./wykresy_pytania_kwestionariusz/wyksztalcenie_rodzicow.png")
+
+
+
+
+
+```
+
