@@ -73,4 +73,7 @@ ggplot(to_plot, aes(x=Tablets_number, y=value)) +
   facet_wrap(~ variable) +
   ylab("Średni wynik") +
   coord_cartesian(ylim=c(300,550)) +
-  xlab("Liczba tabletów w domu")
+  ggtitle("Wpływ dostępności do tabletów na średni wynik") +
+  xlab("Liczba tabletów w domu") +
+  ggsave("wykresy_pytania_kwestionariusz/liczba_tabletow.png",width = 18, height = 9)
+

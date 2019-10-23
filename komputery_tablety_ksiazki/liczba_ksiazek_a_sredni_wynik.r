@@ -73,4 +73,7 @@ ggplot(to_plot, aes(x= factor(Books_number, levels = c("0-10","11-25","26-100","
   facet_wrap(~ variable) +
   ylab("Średni wynik") +
   coord_cartesian(ylim=c(300,550)) +
-  xlab("Liczba książek w domu")
+  xlab("Liczba książek w domu") +
+  ggtitle("Wpływ liczby książek w domu na średni wynik") +
+  ggsave("wykresy_pytania_kwestionariusz/liczba_ksiazek.png",width = 18, height = 9)
+

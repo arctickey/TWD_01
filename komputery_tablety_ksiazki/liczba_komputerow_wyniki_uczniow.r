@@ -73,5 +73,7 @@ ggplot(to_plot, aes(x=Computer_number, y=value)) +
   facet_wrap(~ variable) +
   ylab("Średni wynik") +
   coord_cartesian(ylim=c(300,550)) +
-  xlab("Liczba komputerów w domu")
+  xlab("Liczba komputerów w domu") +
+  ggtitle("Wpływ dostępności do komputerów na średni wynik") +
+  ggsave("wykresy_pytania_kwestionariusz/liczba_komputerow.png",width = 18, height = 9)
   
