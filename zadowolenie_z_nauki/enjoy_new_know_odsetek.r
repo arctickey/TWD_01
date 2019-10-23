@@ -28,9 +28,12 @@ colnames(to_plot) <- c("ST094Q04NA", "Wszyscy", "Geniusze")
 
 to_plot <- melt(to_plot, id.vars = "ST094Q04NA")
 
-ggplot(to_plot, aes(x = ST094Q04NA, y=value, fill = variable)) +
+ggplot(to_plot, aes(x = factor(ST094Q04NA), y=value, fill = variable)) +
   geom_bar(stat='identity', position='dodge') +
-  xlab("Zgodność ze stwierdzeniem") +
+  xlab("Odpowiedź na pytanie") +
   ylab("Odsetek ankietowanych") +
   theme(legend.title = element_blank()) +
-  ggtitle("I enjoy acquiring new knowledge")
+  ggtitle("\"I enjoy acquiring new knowledge\" odpowiedzi geniuszy względem całości") +
+  scale_x_discrete(labels = c("strongly disagree","disagree","agree","strongly agree")) +
+  ggsave("wykresy_pytania_kwestionariusz/enjoy_new_knowledge_odsetek.png",width = 18, height = 9)
+

@@ -73,5 +73,7 @@ ggplot(to_plot, aes(x=reorder(opinion, value), y=value)) +
   facet_wrap(~ variable) +
   ylab("Średni wynik") +
   coord_cartesian(ylim=c(300,550)) +
-  xlab("Zadowolenie podczas nauki") +
-  ggtitle("I generally have fun when I am learning")
+  xlab("Odpowiedź na pytanie") +
+  ggtitle("\"I generally have fun when I am learning\" średni wynik względem odpowiedzi") +
+  ggsave("wykresy_pytania_kwestionariusz/have_fun_learning.png",width = 18, height = 9)
+

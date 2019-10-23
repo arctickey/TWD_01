@@ -28,10 +28,12 @@ colnames(to_plot) <- c("ST094Q01NA", "Wszyscy", "Geniusze")
 
 to_plot <- melt(to_plot, id.vars = "ST094Q01NA")
 
-ggplot(to_plot, aes(x = ST094Q01NA, y=value, fill = variable)) +
+ggplot(to_plot, aes(x = factor(ST094Q01NA), y=value, fill = variable)) +
   geom_bar(stat='identity', position='dodge') +
   xlab("Zgodność ze stwierdzeniem") +
   ylab("Odsetek ankietowanych") +
   theme(legend.title = element_blank()) +
-  ggtitle("I generally have fun when I am learning")
+  ggtitle("\"I generally have fun when I am learning\" odpowiedzi geniuszy względem całości") +
+  scale_x_discrete(labels = c("strongly disagree","disagree","agree","strongly agree")) +
+  ggsave("wykresy_pytania_kwestionariusz/have_fun_odsetek.png",width = 18, height = 9)
   

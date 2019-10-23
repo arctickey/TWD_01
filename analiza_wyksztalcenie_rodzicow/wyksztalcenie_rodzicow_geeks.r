@@ -131,13 +131,14 @@ result_geeks_1 <- as.matrix(result_geeks_1)
 
 #Wykres
 to_plot_2 <- melt(result_geeks_1, id.vars = row.names(result_geeks_1))
-#Odsetek osob z poszczegolnych grup wuksztalcenia nalezacych do top 5% wynikow
-plot2 <- ggplot(to_plot_2, aes(x = Var2, y = value)) +
+#Odsetek osob z poszczegolnych grup wyksztalcenia nalezacych do top 5% wynikow
+plot2 <- ggplot(to_plot_2, aes(x = reorder(Var2, value), y = value)) +
   geom_bar(stat = "identity") +
   facet_wrap(~ Var1) +
-  ggtitle("Rozkład procentowy osób z grupy 5% najlepszych względem wykształcenia rodziców") +
+  ggtitle("Podział grupy geniuszów względem wykształcenia rodziców") +
   xlab("Wykształcenie rodziców") +
-  ylab("Odsetek osób w grupie 5% najlepszych")
-
-plot1
+  ylab("Odsetek")
+  
 plot2
+
+ggsave(plot = plot2, "wykresy_pytania_kwestionariusz/rozklad_geeks_na_wyksztalcenie.png",width = 18, height = 9)
