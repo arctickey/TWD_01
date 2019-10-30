@@ -26,9 +26,13 @@ final <- inner_join(result, rd_data, by = c("CNT" = "LOCATION")) %>% left_join(.
 
 ggplot(final, aes(x = avg_rd, y=Mean, colour=continent, label = country.name.en))+
   geom_point(size=4)+
-  stat_smooth(method = "loess",inherit.aes = FALSE,aes(x=avg_rd,y=Mean))+
+  stat_smooth(method = "auto",inherit.aes = FALSE,aes(x=avg_rd,y=Mean))+
   ggtitle("Średni wynik względem wydatków na Reaserch & Development")+
   labs(y = "Średni wynik w kraju", x="% PKB wydawany na R&D",color="Kontynent")+
-  theme(axis.title.x = element_text(size = 14), axis.title.y = element_text(size = 14))
+  theme(axis.title.x = element_text(size = 14), axis.title.y = element_text(size = 14))+
+  geom_label_repel( data = final[(final$avg_rd > 4),], color = 'black') +
+  geom_label_repel( data = final[(final$Mean>520),], color = 'black')+
+  geom_label_repel( data = final[(final$Mean<430),], color = 'black')+
+  geom_label_repel( data = final[(final$avg_rd > 2)&(final$avg_rd < 3)&(final$Mean<490),], color = 'black')
 
 #ggsave("Wykres_spend_RD/all_student_spend_RD_auto.png",width = 18, height = 9)
