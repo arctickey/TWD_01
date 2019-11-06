@@ -3,8 +3,10 @@ library(intsvy)
 library(countrycode)
 library(tidyverse)
 library(dplyr)
+library(ggplot2)
+library(ggrepel)
 
-#data <- read_sas("./cy6_ms_cmb_stu_qqq.sas7bdat")
+dane <- read_sas("./cy6_ms_cmb_stu_qqq.sas7bdat")
 data <- dane
 x <- pisa2015.mean.pv(pvlabel = "MATH", by = "CNT", data = data)
 pom1 <- codelist %>% select(continent,iso3c)
@@ -29,10 +31,11 @@ x2 <- merge(x2, wartosc_pieniadza, by.x="CNT", by.y="iso_a3")
 a <- ggplot(x2,aes(x=V50/dollar_price,y=Mean,colour=continent))+
   geom_point(size=4)+
   stat_smooth(method = "auto",inherit.aes = FALSE,aes(x=V50/dollar_price,y=Mean))+
-  ggtitle("PKB per capita vs sredni wynik")+
-  labs(y = "Średni wynik w kraju", x="PKB per capita",color="Kontynent")+
+  ggtitle("Średni wynik w kraju względem PKB per capita")+
+  labs(y = "Średni wynik w kraju", x="PKB per capita (realna siła nabywcza)",color="Kontynent")+
   theme(axis.title.x = element_text(size = 14), axis.title.y = element_text(size = 14))+
   geom_label_repel(aes(label = name), size = 5, color = "black")
+
 a
 
 #ggsave("PKB/PKB.png", width = 18, height = 9)
