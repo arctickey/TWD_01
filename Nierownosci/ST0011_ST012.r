@@ -1,5 +1,6 @@
 #Funkcja do kalkulacji roznic pomiedzy grupami krajow rozwinietych i rozwijajacych sie
-
+library(tidyverse)
+library(haven)
 #Funkcja wykorszystywana do podzielenia krajow na grupy
 podziel_grupy_PKB <- function(frame){
   library(dplyr)
@@ -64,7 +65,28 @@ pytanie_ST011 <- function(dane, kolumny){
   return(wynik)
 }
 
+
+
+pytanie_ST013 <- function(dane){
+  dane1 <- dane[, c("CNT", "ST013Q01TA")]
+  dane1 <- podziel_grupy_PKB(dane1)
+  dane1 <- dane1[, -1]
+  wynik <- group_by(dane1, grupa_rozwoju,ST013Q01TA) %>% count()
+  wynik <- na.omit(wynik)
+  wynik$ST013Q01TA1[wynik$ST013Q01TA==1] <- "[0,10]"
+  wynik$ST013Q01TA1[wynik$ST013Q01TA==2] <- "[11,25]"
+  wynik$ST013Q01TA1[wynik$ST013Q01TA==3] <- "[26,100]"
+  wynik$ST013Q01TA1[wynik$ST013Q01TA==4] <- "[101,200]"
+  wynik$ST013Q01TA1[wynik$ST013Q01TA==5] <- "[201,500]"
+  wynik$ST013Q01TA1[wynik$ST013Q01TA==6] <- "[500,inf]"
+  
+  return(wynik)
+} #pytanie o ksiązki
+
 #dane <- read_sas("./cy6_ms_cmb_stu_qqq.sas7bdat")
+
+
+
 
 kolumny_st012 <- c("ST012Q01TA",
              "ST012Q02TA",
@@ -88,6 +110,18 @@ kolumny_st011 <- c("ST011Q04TA",
                    "ST011Q05TA",
                    "ST011Q09TA")
 
+
 ST011 <- pytanie_ST011(dane, kolumny_st011)
 
 ST012 <- pytanie_ST012(dane, kolumny_st012)
+
+ST013 <- pytanie_ST013(dane)
+
+
+a1 <- ggplot(ST013,aes(x=reorder(ST013Q01TA1,ST013Q01TA),y=n,fill=grupa_rozwoju))+geom_bar(stat='identity',position='dodge')+
+  ggtitle("Ilosc ksiazek w domu w zaleznosci od grupy")+
+  coord_flip()+
+  ylab("Liczebnosc grupy")+
+  xlab("")
+
+#a1 to wykres ilosci ksiazek w zaleznosci od grupy rozwoju
