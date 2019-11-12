@@ -127,3 +127,18 @@ ST012 <- pytanie_ST012(dane, kolumny_st012)
 #   xlab("")
 
 #a1 to wykres ilosci ksiazek w zaleznosci od grupy rozwoju
+
+
+library(reshape2)
+
+ST011[1, -1] <- lapply(ST011[1, -1], FUN = function(x){-1*x})
+to_plot_melt <- melt(ST011, id.vars = "grupa_rozwoju")
+
+ggplot(data = to_plot_melt, aes(x = variable, y = value, fill = grupa_rozwoju))+
+  geom_bar(stat = "identity")+
+  coord_flip()+
+  theme_minimal()+
+  theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        legend.position = "none")+
+  annotate(geom = "text", x = to_plot_melt$variable, y = 0, label = to_plot_melt$variable)
