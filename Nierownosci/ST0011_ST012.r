@@ -1,6 +1,6 @@
 #Funkcja do kalkulacji roznic pomiedzy grupami krajow rozwinietych i rozwijajacych sie
-library(tidyverse)
 library(haven)
+
 #Funkcja wykorszystywana do podzielenia krajow na grupy
 podziel_grupy_PKB <- function(frame){
   library(dplyr)
@@ -115,13 +115,15 @@ ST011 <- pytanie_ST011(dane, kolumny_st011)
 
 ST012 <- pytanie_ST012(dane, kolumny_st012)
 
-ST013 <- pytanie_ST013(dane)
+#ST013 <- pytanie_ST013(dane)
 
 
-a1 <- ggplot(ST013,aes(x=reorder(ST013Q01TA1,ST013Q01TA),y=n,fill=grupa_rozwoju))+geom_bar(stat='identity',position='dodge')+
-  ggtitle("Ilosc ksiazek w domu w zaleznosci od grupy")+
-  coord_flip()+
-  ylab("Liczebnosc grupy")+
-  xlab("")
+
+
+# a1 <- ggplot(ST013,aes(x=reorder(ST013Q01TA1,ST013Q01TA),y=n,fill=grupa_rozwoju))+geom_bar(stat='identity',position='dodge')+
+#   ggtitle("Ilosc ksiazek w domu w zaleznosci od grupy")+
+#   coord_flip()+
+#   ylab("Liczebnosc grupy")+
+#   xlab("")
 
 #a1 to wykres ilosci ksiazek w zaleznosci od grupy rozwoju
