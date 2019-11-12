@@ -174,3 +174,4 @@ ggplot(NULL)+
   scale_x_discrete(limits = os_pytan, expand = expand_scale(0.07))+
   ggtitle("Students who do not have at home...")
 
+ggsave("Nierownosci/not_at_home.png", width = 8, height = 8)
