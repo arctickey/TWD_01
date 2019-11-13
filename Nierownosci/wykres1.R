@@ -1,41 +1,89 @@
-kolumny <- c("CNT","MISCED","FISCED","HISCED")
+library(haven)
+library(tidyverse)
+kolumny <- c("CNT","HISCED")
+dane <- read_sas("./cy6_ms_cmb_stu_qqq.sas7bdat")
 dane1 <- dane[, kolumny]
 dane1 <- podziel_grupy_PKB(dane1)
 dane1 <- dane1[, -1]
-wynik <- group_by(dane1, grupa_rozwoju,MISCED) %>% count()
-wynik1 <- group_by(dane1, grupa_rozwoju,FISCED) %>% count()
-wynik2 <- group_by(dane1, grupa_rozwoju,HISCED) %>% count()
-wynik <- na.omit(wynik)
-wynik1 <- na.omit(wynik1)
-wynik2<- na.omit(wynik2)
-wynik <- group_by(wynik,grupa_rozwoju) %>% mutate(suma = sum(n)) %>% mutate(procent=round(n/suma,digits=3))
-wynik1 <- group_by(wynik1,grupa_rozwoju) %>% mutate(suma = sum(n)) %>% mutate(procent=round(n/suma,digits=3))
-wynik2 <- group_by(wynik2,grupa_rozwoju) %>% mutate(suma = sum(n)) %>% mutate(procent=round(n/suma,digits=3))
 
-wynik3 <- melt(wynik2,id.vars = c("HISCED","grupa_rozwoju"))
-wynik3 <- reshape(wynik3,idvar = "HISCED",direction  ='wide',timevar = "grupa_rozwoju")
-wynik3$variable.1 <- NULL
-wynik3$variable.2 <- NULL
-colnames(wynik3) <- c("HISCED","Grupa_1","Grupa_2")
-wynik4 <- mutate(wynik3,Grupa_1=Grupa_1/(Grupa_1+Grupa_2),Grupa_2=Grupa_2/(Grupa_1+Grupa_2))
-wynik5 <- reshape(wynik4,idvar = "HISCED",direction  ='long')
+wyksztalcenie <- function(){
+  kolumny <- c("CNT","HISCED")
+  dane1 <- dane[, kolumny]
+  dane1 <- podziel_grupy_PKB(dane1)
+  dane1 <- dane1[, -1]
+  wynik<- group_by(dane1, grupa_rozwoju,HISCED) %>% count()
+  wynik <- na.omit(wynik)
+  wynik <- group_by(wynik,grupa_rozwoju) %>% mutate(suma = sum(n)) %>% mutate(procent=round(n/suma,digits=3))
+  wynik$suma <- NULL
+  wynik_podst <- filter(wynik,HISCED %in% c(0,1)) %>% group_by(grupa_rozwoju) %>% summarise(procent = sum(procent)) %>% 
+    mutate(Wyksztalcenie="Podstawowe")
+  wynik_srednie <- filter(wynik,HISCED %in% c(2,3,4)) %>% group_by(grupa_rozwoju) %>% summarise(procent = sum(procent)) %>% 
+    mutate(Wyksztalcenie="Srednie")
+  wynik_wyzsze <- filter(wynik,HISCED %in% c(5,6)) %>% group_by(grupa_rozwoju) %>% summarise(procent = sum(procent)) %>% 
+    mutate(Wyksztalcenie="Wyzsze")
+  wynik <- rbind(wynik_srednie,wynik_podst,wynik_wyzsze)
+}
+wyksztalcenie_M <- function(){
+  kolumny <- c("CNT","FISCED")
+  dane1 <- dane[, kolumny]
+  dane1 <- podziel_grupy_PKB(dane1)
+  dane1 <- dane1[, -1]
+  wynik<- group_by(dane1, grupa_rozwoju,FISCED) %>% count()
+  wynik <- na.omit(wynik)
+  wynik <- group_by(wynik,grupa_rozwoju) %>% mutate(suma = sum(n)) %>% mutate(procent=round(n/suma,digits=3))
+  wynik$suma <- NULL
+  wynik_podst <- filter(wynik,FISCED %in% c(0,1)) %>% group_by(grupa_rozwoju) %>% summarise(procent = sum(procent)) %>% 
+    mutate(Wyksztalcenie="Podstawowe")
+  wynik_srednie <- filter(wynik,FISCED %in% c(2,3,4)) %>% group_by(grupa_rozwoju) %>% summarise(procent = sum(procent)) %>% 
+    mutate(Wyksztalcenie="Srednie")
+  wynik_wyzsze <- filter(wynik,FISCED %in% c(5,6)) %>% group_by(grupa_rozwoju) %>% summarise(procent = sum(procent)) %>% 
+    mutate(Wyksztalcenie="Wyzsze")
+  wynik <- rbind(wynik_wyzsze,wynik_srednie,wynik_podst)
+}
+wyksztalcenie_K <- function(){
+  kolumny <- c("CNT","MISCED")
+  dane1 <- dane[, kolumny]
+  dane1 <- podziel_grupy_PKB(dane1)
+  dane1 <- dane1[, -1]
+  wynik<- group_by(dane1, grupa_rozwoju,MISCED) %>% count()
+  wynik <- na.omit(wynik)
+  wynik <- group_by(wynik,grupa_rozwoju) %>% mutate(suma = sum(n)) %>% mutate(procent=round(n/suma,digits=3))
+  wynik$suma <- NULL
+  wynik_podst <- filter(wynik,MISCED %in% c(0,1)) %>% group_by(grupa_rozwoju) %>% summarise(procent = sum(procent)) %>% 
+    mutate(Wyksztalcenie="Podstawowe")
+  wynik_srednie <- filter(wynik,MISCED %in% c(2,3,4)) %>% group_by(grupa_rozwoju) %>% summarise(procent = sum(procent)) %>% 
+    mutate(Wyksztalcenie="Srednie")
+  wynik_wyzsze <- filter(wynik,MISCED %in% c(5,6)) %>% group_by(grupa_rozwoju) %>% summarise(procent = sum(procent)) %>% 
+    mutate(Wyksztalcenie="Wyzsze")
+  wynik <- rbind(wynik_wyzsze,wynik_srednie,wynik_podst)
+}
 
-a1 <- ggplot(wynik3, aes(x=Grupa_1, xend=Grupa_2, y=HISCED, group=HISCED)) + 
-    geom_dumbbell(
-                size=5, 
-                colour_x ="cornflowerblue",
-                color="#a3c4dc",
-                colour_xend="firebrick3")+theme_minimal()
+najwyzsze <- wyksztalcenie()
+kobiety <- wyksztalcenie_K()
+faceci <- wyksztalcenie_M()
+
+
+
+a <- ggplot(najwyzsze,aes(x=grupa_rozwoju,y=procent))+
+  geom_bar(aes(fill=Wyksztalcenie),width=0.3,stat='identity',position = position_fill(reverse = TRUE))+
+  theme_classic()+
+  coord_flip()+xlab("")+ylab("")+ggtitle("Wyksztalcenie wsrod rodzicow po grupach rozwoju")+
+  theme(plot.title = element_text(hjust = 0.5,size=18))
+
+ak <- ggplot(kobiety,aes(x=grupa_rozwoju,y=procent))+
+  geom_bar(aes(fill=Wyksztalcenie),width=0.3,stat='identity',position = position_fill(reverse = TRUE))+
+  theme_classic()+
+  coord_flip()+xlab("")+ylab("")+ggtitle("Wyksztalcenie wsrod mam po grupach rozwoju")+
+  theme(plot.title = element_text(hjust = 0.5,size=18),panel.background = element_blank())
+  
   
 
+am <- ggplot(faceci,aes(x=grupa_rozwoju,y=procent))+
+  geom_bar(aes(fill=Wyksztalcenie),width=0.3,stat='identity',position = position_fill(reverse = TRUE))+
+  theme_classic()+
+  coord_flip()+xlab("")+ylab("")+ggtitle("Wyksztalcenie wsrod ojców po grupach rozwoju")+
+  theme(plot.title = element_text(hjust = 0.5,size=18))
 
+ggsave(file="Wykształczenie_matek.svg", plot=ak, width=10, height=8)
+ggsave(file="Wykształczenie_ojcow.svg", plot=am, width=10, height=8)
 
-
-
-ggplot(wynik4,aes(x=HISCED,y=p,fill=grupa_rozwoju))+geom_bar(stat='identity')+
-  xlab("Wyksztalcenie matek w skali ISCED")+ylab("")+ggtitle("Procent lepszego wykstalcenia rodzica w grupie")+
-  scale_x_continuous(breaks = round(seq(min(wynik2$HISCED), max(wynik2$HISCED), by = 1),1)) +
-  theme(legend.title = element_blank())+theme_minimal()+coord_flip()
-
-
-  
