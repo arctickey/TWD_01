@@ -134,9 +134,9 @@ os_pytan <- to_plot[1, -1]
 os_pytan <- os_pytan[, order(os_pytan[1,])]
 os_pytan <- colnames(os_pytan)
 
-podpisy <- c("Dictionary", "Smartphone", "A quiet place to study", "Rooms with a bath or shower",
-             "A desk to study at", "A room of your own", "A link to the Internet", "Computer","Car",
-             "Work of art", "Musical instrument", "Tablet", "Educational software")
+podpisy <- c("Słownik", "Smartphone", "Ciche miejsce do nauki", "Łazienka",
+             "Biurko do nauki", "Własny pokój", "Połączenie z Internetem", "Komputer","Auto",
+             "Dzieło sztuki", "Instrument muzyczny", "Tablet", "Oprogramowanie edukacyjne")
 
 naloz_gr_2 <- to_plot_melt[to_plot_melt$grupa_rozwoju==2,]
 naloz_gr_2[2,3] <- 6.306474
@@ -169,9 +169,9 @@ ggplot(NULL)+
         plot.margin = unit(rep(0.7, 4), "cm"))+
   annotate(geom = "label", x = os_pytan[13:1], y = 0, label = podpisy, vjust = 1.8, size = 3.5)+
   xlab("")+
-  ylab("Percentage")+
+  ylab("Odsetek")+
   scale_y_continuous(breaks = seq(-70, 70, by = 10), limits = c(-70, 70), labels = c(seq(70, 10, -10), seq(0, 70, 10)))+
   scale_x_discrete(limits = os_pytan, expand = expand_scale(0.07))+
-  ggtitle("Students who do not have at home...")
+  ggtitle("Odsetek badanych uczniów, którzy nie mają w domu")
 
-#ggsave("Nierownosci/not_at_home.png", width = 8, height = 8)
+#ggsave("Nierownosci/not_at_home.png", width = 9, height = 9)
