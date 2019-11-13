@@ -28,8 +28,7 @@ wartosc_pieniadza <- wartosc_pieniadza[wartosc_pieniadza$date=="2015-07-01", c(2
 x2 <- merge(x2, wartosc_pieniadza, by.x="CNT", by.y="iso_a3")
 x2 <- x2[,-c(2,4,5,6)]
 x2$grupa_rozwoju <- NA
-wysoko_rozwiniete <- c("NZL", "CAN", "CHE", "AUS", "SWE", "GBR", "DNK", "NOR","USA",
-                       "HUN", "CZE", "ISR", "RUS", "POL","JPN","KOR")
+wysoko_rozwiniete <- c("NZL", "CAN", "CHE", "AUS", "SWE", "GBR", "DNK", "NOR","USA","JPN")
 slabo_rozwiniete <- c("BRA", "MEX", "CHL", "PER", "COL", "IDN", "CRI", "TUR", "URY", "THA")
 wr_indeksy <- ifelse(x2$CNT%in% wysoko_rozwiniete,TRUE,FALSE)
 x2$grupa_rozwoju[wr_indeksy] <- "wr"
@@ -44,18 +43,20 @@ kraje_pl <- c("ZEA", "Australia",
 
 x2$name <- kraje_pl
 
+ineksy <- ifelse(is.na(x2$grupa_rozwoju),TRUE,FALSE)
+ineksy
 
-
+x2$grupa_rozwoju[ineksy] <-  "g1"
   ggplot(x2,aes(x=V50/dollar_price,y=Mean,colour=grupa_rozwoju))+
   geom_point(size=5)+
-  stat_smooth(method = "auto",inherit.aes = FALSE,aes(x=V50/dollar_price,y=Mean))+
+  stat_smooth(method = "auto",inherit.aes = FALSE,aes(x=V50/dollar_price,y=Mean),alpha =0.2)+
   labs(y = "Średni wynik w kraju", x="PKB per capita (realna siła nabywcza)",color="Grupa Rozwoju",
       title ="Średni wynik w kraju względem PKB per capita",
       subtitle = "Dane zostały przeskalowane przez indeks big-maca aby oddawać faktyczną wartość nabywczą pieniądza"
       )+
   theme(axis.title.x = element_text(size = 14), axis.title.y = element_text(size = 14))+
-  scale_color_discrete(breaks=c("wr","sr"),labels=c("Wysoko rozwinięte","Słabo rozwinięte"))+
-  geom_label_repel(aes(label = name), size = 7, color = "black")+
+  scale_color_manual(breaks=c("wr","sr"),labels=c("Wysoko rozwinięte","Rozwijające się"),values =c("#636363","#66c2a5","#fb5515"))+
+  geom_label_repel(aes(label = name), size = 6, color = "black",force = 1)+
   theme_minimal()+
   scale_y_continuous(limits = c(350 ,575),breaks=seq(350,575,25))+
   scale_x_continuous(breaks = seq(0,12000,1000),limits = c(0,12700),expand = c(0,0))+
@@ -83,7 +84,7 @@ x2$name <- kraje_pl
 
 
 
-ggsave("PKB/PKB.png", width = 18, height = 9)
+ggsave("PKB/PKB1.png", width = 18, height = 9)
 
 
 # b <- ggplot(x3,aes(x=Value,y=Mean,colour=continent))+
