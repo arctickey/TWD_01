@@ -3,7 +3,7 @@
 library(haven)
 library(reshape2)
 library(ggplot2)
-#dane <- read_sas("./cy6_ms_cmb_stu_qqq.sas7bdat")
+dane <- read_sas("./cy6_ms_cmb_stu_qqq.sas7bdat")
 
 #Funkcja wykorszystywana do podzielenia krajow na grupy
 podziel_grupy_PKB <- function(frame){
@@ -149,11 +149,11 @@ gr_2[2,3] <- 6.306474
 
 
 ggplot(NULL)+
-  geom_bar(data = to_plot_melt[to_plot_melt$grupa_rozwoju==1,], aes(x = pytanie, y = wartosc), fill = "red", 
+  geom_bar(data = to_plot_melt[to_plot_melt$grupa_rozwoju==1,], aes(x = pytanie, y = wartosc), fill = "#fb5515", 
            stat = "identity", width = 0.35)+
   geom_bar(data = naloz_gr_2, aes(x = pytanie, y = -wartosc), fill = "#fc8d62", 
            stat = "identity", width = 0.35)+
-  geom_bar(data = naloz_gr_1, aes(x = pytanie, y = wartosc), fill = "blue",
+  geom_bar(data = naloz_gr_1, aes(x = pytanie, y = wartosc), fill = "#2e735d",
            stat = "identity", width = 0.35)+
   geom_bar(data = gr_2, aes(x = pytanie, y = wartosc), fill = "#66c2a5",
            stat = "identity", width = 0.35)+
@@ -174,4 +174,4 @@ ggplot(NULL)+
   scale_x_discrete(limits = os_pytan, expand = expand_scale(0.07))+
   ggtitle("Students who do not have at home...")
 
-ggsave("Nierownosci/not_at_home.png", width = 8, height = 8)
+#ggsave("Nierownosci/not_at_home.png", width = 8, height = 8)
