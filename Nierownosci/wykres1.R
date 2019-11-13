@@ -74,7 +74,11 @@ ak <- ggplot(kobiety,aes(x=grupa_rozwoju,y=procent))+
   geom_bar(aes(fill=Wyksztalcenie),width=0.3,stat='identity',position = position_fill(reverse = TRUE))+
   theme_classic()+
   coord_flip()+xlab("")+ylab("")+ggtitle("Wyksztalcenie wsrod mam po grupach rozwoju")+
-  theme(plot.title = element_text(hjust = 0.5,size=18),panel.background = element_blank())
+  theme(plot.title = element_text(hjust = 0.5,size=18),panel.background = element_blank(),
+        axis.text.x = element_text(size=12 ),
+        axis.text.y = element_text(size=12 ),
+        legend.text = element_text(size=12),
+        legend.title = element_text(size=12))
   
   
 
@@ -82,7 +86,11 @@ am <- ggplot(faceci,aes(x=grupa_rozwoju,y=procent))+
   geom_bar(aes(fill=Wyksztalcenie),width=0.3,stat='identity',position = position_fill(reverse = TRUE))+
   theme_classic()+
   coord_flip()+xlab("")+ylab("")+ggtitle("Wyksztalcenie wsrod ojców po grupach rozwoju")+
-  theme(plot.title = element_text(hjust = 0.5,size=18))
+  theme(plot.title = element_text(hjust = 0.5,size=18),
+        axis.text.x = element_text(size=12 ),
+        axis.text.y = element_text(size=12 ),
+        legend.text = element_text(size=12),
+        legend.title = element_text(size=12))
 
 ggsave(file="Wykształczenie_matek.svg", plot=ak, width=10, height=8)
 ggsave(file="Wykształczenie_ojcow.svg", plot=am, width=10, height=8)
