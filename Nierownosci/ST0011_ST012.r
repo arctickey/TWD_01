@@ -3,7 +3,8 @@
 library(haven)
 library(reshape2)
 library(ggplot2)
-dane <- read_sas("./cy6_ms_cmb_stu_qqq.sas7bdat")
+
+#dane <- read_sas("./cy6_ms_cmb_stu_qqq.sas7bdat")
 
 #Funkcja wykorszystywana do podzielenia krajow na grupy
 podziel_grupy_PKB <- function(frame){
@@ -16,8 +17,7 @@ podziel_grupy_PKB <- function(frame){
   slabo_rozwiniete <- c("BRA", "MEX", "CHL", "PER", "COL", "IDN", "CRI", "TUR", "URY", "THA")
   
   #Kraje srednie dolaczam do rozwinietych po analizie ostatnich wynikow
-  wysoko_rozwiniete <- c("NZL", "CAN", "CHE", "AUS", "SWE", "GBR", "DNK", "NOR","USA",
-                         "HUN", "CZE", "ISR", "RUS", "POL")
+  wysoko_rozwiniete <- c("NZL", "CAN", "CHE", "AUS", "SWE", "GBR", "DNK", "NOR","USA")
   
   wyniki_slabe <- filter(frame, CNT %in% slabo_rozwiniete)
   wyniki_wysoko <- filter(frame, CNT %in% wysoko_rozwiniete)
@@ -148,7 +148,7 @@ gr_2 <- to_plot_melt[to_plot_melt$grupa_rozwoju==2,]
 gr_2[2,3] <- 6.306474
 
 
-ggplot(NULL)+
+p <- ggplot(NULL)+
   geom_bar(data = to_plot_melt[to_plot_melt$grupa_rozwoju==1,], aes(x = pytanie, y = wartosc), fill = "#fb5515", 
            stat = "identity", width = 0.35)+
   geom_bar(data = naloz_gr_2, aes(x = pytanie, y = -wartosc), fill = "#fc8d62", 
@@ -167,11 +167,17 @@ ggplot(NULL)+
         #panel.ontop = TRUE,
         plot.title = element_text(hjust = 0.5, vjust = 3),
         plot.margin = unit(rep(0.7, 4), "cm"))+
-  annotate(geom = "label", x = os_pytan[13:1], y = 0, label = podpisy, vjust = 1.8, size = 3.5)+
+  annotate(geom = "label", x = os_pytan[13:1], y = 0, label = podpisy, vjust = -1, size = 3.5)+
   xlab("")+
   ylab("Odsetek")+
   scale_y_continuous(breaks = seq(-70, 70, by = 10), limits = c(-70, 70), labels = c(seq(70, 10, -10), seq(0, 70, 10)))+
   scale_x_discrete(limits = os_pytan, expand = expand_scale(0.07))+
   ggtitle("Odsetek badanych uczniów, którzy nie mają w domu")
 
-#ggsave("Nierownosci/not_at_home.png", width = 9, height = 9)
+
+# ggsave("Nierownosci/not_at_home.png", width = 9, height = 9)
+# 
+# library(svglite)
+# svglite("Nierownosci/not_at_home.svg", width = 10, height = 10)
+# p
+# dev.off()
