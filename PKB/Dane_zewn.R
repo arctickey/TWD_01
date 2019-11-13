@@ -55,11 +55,11 @@ x2$grupa_rozwoju[ineksy] <-  "g1"
       subtitle = "Dane zostały przeskalowane przez indeks big-maca aby oddawać faktyczną wartość nabywczą pieniądza"
       )+
   theme(axis.title.x = element_text(size = 14), axis.title.y = element_text(size = 14))+
-  scale_color_manual(breaks=c("wr","sr"),labels=c("Wysoko rozwinięte","Rozwijające się"),values =c("#636363","#66c2a5","#fb5515"))+
+  scale_color_manual(breaks=c("wr","sr"),labels=c("Wysoko rozwinięte","Rozwijające się"),values =c("#636363","#fb5515","#66c2a5"))+
   geom_label_repel(aes(label = name), size = 6, color = "black",force = 1)+
   theme_minimal()+
   scale_y_continuous(limits = c(350 ,575),breaks=seq(350,575,25))+
-  scale_x_continuous(breaks = seq(0,12000,1000),limits = c(0,12700),expand = c(0,0))+
+  scale_x_continuous(breaks = seq(0,12000,1000),limits = c(0,12700),expand = c(0,0),labels = paste0(seq(0,12000,1000),"$"))+
   theme(
     legend.title = element_text(size=15),
     legend.text = element_text(size =15 ),
@@ -70,17 +70,20 @@ x2$grupa_rozwoju[ineksy] <-  "g1"
     axis.text.x = element_text(face="bold"),
     axis.text.y = element_text(face ="bold"),
     # ustawaine legendy
-    legend.direction = "horizontal",
-    legend.position = "top"
-    #legend.key = element_rect(color = NA, fill = NA),
-    #legend.key.size = unit(1.5, "cm"),
-    #legend.position = c(0.55,0.3),
+    #legend.direction = "horizontal",
+    #legend.position = "top",
+    legend.key = element_rect(color = NA, fill = NA),
+    legend.key.size = unit(1.5, "cm"),
+    legend.position = c(0.55,0.3),
+    panel.grid.major = element_line(colour = "gray",size=0.3),
+    panel.grid.minor = element_line(colour = "gray",size=0.3)
   )
     
   
+library(svglite)
+svglite("PLAKAT//PKB_legenda_in.svg", width = 10, height = 10)
   
-  
-  
+dev.off()  
 
 
 
