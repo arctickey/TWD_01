@@ -36,9 +36,9 @@ wyksztalcenie_M <- function(){
   wynik_podst <- filter(wynik,FISCED %in% c(0,1)) %>% group_by(grupa_rozwoju) %>% summarise(procent = sum(procent)) %>% 
     mutate(Wyksztalcenie="Podstawowe")
   wynik_srednie <- filter(wynik,FISCED %in% c(2,3,4)) %>% group_by(grupa_rozwoju) %>% summarise(procent = sum(procent)) %>% 
-    mutate(Wyksztalcenie="Srednie")
+    mutate(Wyksztalcenie="Średnie")
   wynik_wyzsze <- filter(wynik,FISCED %in% c(5,6)) %>% group_by(grupa_rozwoju) %>% summarise(procent = sum(procent)) %>% 
-    mutate(Wyksztalcenie="Wyzsze")
+    mutate(Wyksztalcenie="Wyższe")
   wynik <- rbind(wynik_wyzsze,wynik_srednie,wynik_podst)
 }
 wyksztalcenie_K <- function(){
@@ -53,9 +53,9 @@ wyksztalcenie_K <- function(){
   wynik_podst <- filter(wynik,MISCED %in% c(0,1)) %>% group_by(grupa_rozwoju) %>% summarise(procent = sum(procent)) %>% 
     mutate(Wyksztalcenie="Podstawowe")
   wynik_srednie <- filter(wynik,MISCED %in% c(2,3,4)) %>% group_by(grupa_rozwoju) %>% summarise(procent = sum(procent)) %>% 
-    mutate(Wyksztalcenie="Srednie")
+    mutate(Wyksztalcenie="Średnie")
   wynik_wyzsze <- filter(wynik,MISCED %in% c(5,6)) %>% group_by(grupa_rozwoju) %>% summarise(procent = sum(procent)) %>% 
-    mutate(Wyksztalcenie="Wyzsze")
+    mutate(Wyksztalcenie="Wyższe")
   wynik <- rbind(wynik_wyzsze,wynik_srednie,wynik_podst)
 }
 
@@ -71,7 +71,7 @@ a <- ggplot(najwyzsze,aes(x=grupa_rozwoju,y=procent))+
   coord_flip()+xlab("")+ylab("")+ggtitle("Wyksztalcenie wsrod rodzicow po grupach rozwoju")+
   theme(plot.title = element_text(hjust = 0.5,size=18))
 
-ggplot(kobiety,aes(x=grupa_rozwoju,y=procent))+
+ak <- ggplot(kobiety,aes(x=grupa_rozwoju,y=procent))+
   geom_bar(aes(fill=Wyksztalcenie),width=0.9,stat='identity',position = position_fill(reverse = TRUE))+
   scale_fill_manual(values=c("#fc8d62","#8da0cb","#ffd92f"))+
   theme_minimal()+
@@ -83,23 +83,30 @@ ggplot(kobiety,aes(x=grupa_rozwoju,y=procent))+
         legend.direction = "horizontal",
         axis.text.y = element_blank(),
         panel.grid = element_blank(),
-        #legend.key = element_rect(color = NA, fill = NA),
-        #legend.key.size = unit(1.5, "cm"),
+        legend.spacing.x = unit(0.5, 'cm'),
         legend.text = element_text(size=12),
         legend.title = element_blank())
   
   
 
+
 am <- ggplot(faceci,aes(x=grupa_rozwoju,y=procent))+
-  geom_bar(aes(fill=Wyksztalcenie),width=0.3,stat='identity',position = position_fill(reverse = TRUE))+
-  theme_classic()+
-  coord_flip()+xlab("")+ylab("")+ggtitle("Wyksztalcenie wsrod ojców po grupach rozwoju")+
-  theme(plot.title = element_text(hjust = 0.5,size=18),
-        axis.text.x = element_text(size=12 ),
-        axis.text.y = element_text(size=12 ),
+  geom_bar(aes(fill=Wyksztalcenie),width=0.9,stat='identity',position = position_fill(reverse = TRUE))+
+  scale_fill_manual(values=c("#fc8d62","#8da0cb","#ffd92f"))+
+  theme_minimal()+
+  coord_flip()+xlab("")+ylab("")+ggtitle("Wykształcenie ojców wsród grup rozwoju")+
+  scale_y_continuous(breaks = seq(0,1,0.25),labels = paste0(seq(0,1,0.25)*100,"%"))+
+  theme(plot.title = element_text(hjust = 0.5,size=18),panel.background = element_blank(),
+        axis.text.x = element_text(size=12,face ="bold" ),
+        legend.position = "top",
+        legend.direction = "horizontal",
+        axis.text.y = element_blank(),
+        panel.grid = element_blank(),
+        legend.spacing.x = unit(0.5, 'cm'),
         legend.text = element_text(size=12),
-        legend.title = element_text(size=12))
+        legend.title = element_blank())
 
-
+ggsave("Wykształcenie_matek1.svg",plot=ak,height=9,width=18,device="svg")
+ggsave("Wykształcenie_ojców1.svg",plot=ak,height=9,width=18,device="svg")
 
 
