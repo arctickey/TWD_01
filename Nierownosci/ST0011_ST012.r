@@ -17,7 +17,7 @@ podziel_grupy_PKB <- function(frame){
   slabo_rozwiniete <- c("BRA", "MEX", "CHL", "PER", "COL", "IDN", "CRI", "TUR", "URY", "THA")
   
   #Kraje srednie dolaczam do rozwinietych po analizie ostatnich wynikow
-  wysoko_rozwiniete <- c("NZL", "CAN", "CHE", "AUS", "SWE", "GBR", "DNK", "NOR","USA")
+  wysoko_rozwiniete <- c("NZL", "CAN", "CHE", "AUS", "SWE", "GBR", "DNK", "NOR","USA","JPN")
   
   wyniki_slabe <- filter(frame, CNT %in% slabo_rozwiniete)
   wyniki_wysoko <- filter(frame, CNT %in% wysoko_rozwiniete)
