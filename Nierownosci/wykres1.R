@@ -1,7 +1,8 @@
 library(haven)
-library(tidyverse)
+library(ggplot2)
+library(dplyr)
 kolumny <- c("CNT","HISCED")
-dane <- read_sas("./cy6_ms_cmb_stu_qqq.sas7bdat")
+dane <- read_sas("../cy6_ms_cmb_stu_qqq.sas7bdat")
 dane1 <- dane[, kolumny]
 dane1 <- podziel_grupy_PKB(dane1)
 dane1 <- dane1[, -1]
@@ -70,15 +71,22 @@ a <- ggplot(najwyzsze,aes(x=grupa_rozwoju,y=procent))+
   coord_flip()+xlab("")+ylab("")+ggtitle("Wyksztalcenie wsrod rodzicow po grupach rozwoju")+
   theme(plot.title = element_text(hjust = 0.5,size=18))
 
-ak <- ggplot(kobiety,aes(x=grupa_rozwoju,y=procent))+
-  geom_bar(aes(fill=Wyksztalcenie),width=0.3,stat='identity',position = position_fill(reverse = TRUE))+
-  theme_classic()+
-  coord_flip()+xlab("")+ylab("")+ggtitle("Wyksztalcenie wsrod mam po grupach rozwoju")+
+ggplot(kobiety,aes(x=grupa_rozwoju,y=procent))+
+  geom_bar(aes(fill=Wyksztalcenie),width=0.9,stat='identity',position = position_fill(reverse = TRUE))+
+  scale_fill_manual(values=c("#fc8d62","#8da0cb","#ffd92f"))+
+  theme_minimal()+
+  coord_flip()+xlab("")+ylab("")+ggtitle("Wykształcenie matek wsród grup rozwoju")+
+  scale_y_continuous(breaks = seq(0,1,0.25),labels = paste0(seq(0,1,0.25)*100,"%"))+
   theme(plot.title = element_text(hjust = 0.5,size=18),panel.background = element_blank(),
-        axis.text.x = element_text(size=12 ),
-        axis.text.y = element_text(size=12 ),
+        axis.text.x = element_text(size=12,face ="bold" ),
+        legend.position = "top",
+        legend.direction = "horizontal",
+        axis.text.y = element_blank(),
+        panel.grid = element_blank(),
+        #legend.key = element_rect(color = NA, fill = NA),
+        #legend.key.size = unit(1.5, "cm"),
         legend.text = element_text(size=12),
-        legend.title = element_text(size=12))
+        legend.title = element_blank())
   
   
 
@@ -92,6 +100,6 @@ am <- ggplot(faceci,aes(x=grupa_rozwoju,y=procent))+
         legend.text = element_text(size=12),
         legend.title = element_text(size=12))
 
-ggsave(file="Wykształczenie_matek.svg", plot=ak, width=10, height=8)
-ggsave(file="Wykształczenie_ojcow.svg", plot=am, width=10, height=8)
+
+
 
