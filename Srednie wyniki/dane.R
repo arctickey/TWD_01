@@ -5,7 +5,7 @@ library(dplyr)
 library(intsvy)
 
 
-data <- read_sas("../cy6_ms_cmb_stu_qqq.sas7bdat")
+#data <- read_sas("./cy6_ms_cmb_stu_qqq.sas7bdat")
 
 slabo_rozwiniete <- c("BRA", "MEX", "CHL", "PER", "COL", "IDN", "CRI", "TUR", "URY", "THA")
 
@@ -24,7 +24,7 @@ dane_wr <- data[data$CNT%in%wysoko_rozwiniete,]
 
 dane_sr <- data[data$CNT%in%slabo_rozwiniete,] 
 wynik <-as.data.frame(matrix(nrow=52,ncol = 4))
-colnames(wynik) <- c("Pytanie","grupa rozwoju ", "kraj ", "ma nie ma ")
+colnames(wynik) <- c("Pytanie","grupa_rozwoju ", "kraj ", "ma_nie_ma ")
 remove(data)
 
 dane_sr$ST011Q04TA
@@ -99,8 +99,8 @@ kolumny_st011 <- c(#"ST011Q04TA",
 
 
 
-podpisy2 <- c("Biurko do nauki","Słownik","Połączenie z Internetem","Ciche miejsce do nauki","Własny pokój",
-              "Oprogramowanie edukacyjne","Dzieło sztuki")
+podpisy2 <- c("Biurko_do_nauki","Słownik","Połączenie_z_Internetem","Ciche_miejsce_do_nauki","Własny_pokój",
+              "Oprogramowanie_edukacyjne","Dzieło_sztuki")
 
 podpisy2 <-  c(podpisy[1:24],rep(podpisy2,each=4))
 wynik$Pytanie <- podpisy2
@@ -145,5 +145,34 @@ for (i in kolumny_st011) {
   licznik <-  licznik+1 
 }
 
-write.csv(wynik,"Srednie wyniki/dana.csv")
-  
+write.csv(wynik,"Srednie_wyniki/dana.csv")
+
+
+dane1 <- filter(dana,Grupa=='Wr',Posiadanie=='ma')
+dane2 <- filter(dana,Grupa=='Wr',Posiadanie=='nie ma')
+
+names(dane1)[names(dane1) == 'Wynik'] <- 'Wynik_ma_Wr'
+names(dane2)[names(dane2) == 'Wynik'] <- 'Wynik_nie_ma_Wr'
+dane1 <- cbind(dane1,dane2$Wynik_nie_ma_Wr)
+names(dane1)[names(dane1) == 'dane2$Wynik_nie_ma_Wr'] <- 'Wynik_nie_ma_Wr'
+dane1$X1 <- NULL
+dane1$Posiadanie <- NULL
+dane1$Grupa <- NULL
+
+daneWr <- dane1
+remove(dane1)
+
+dane1 <- filter(dana,Grupa=='Sr',Posiadanie=='ma')
+dane2 <- filter(dana,Grupa=='Sr',Posiadanie=='nie ma')
+
+names(dane1)[names(dane1) == 'Wynik'] <- 'Wynik_ma_Wr'
+names(dane2)[names(dane2) == 'Wynik'] <- 'Wynik_nie_ma_Wr'
+dane1 <- cbind(dane1,dane2$Wynik_nie_ma_Wr)
+names(dane1)[names(dane1) == 'dane2$Wynik_nie_ma_Wr'] <- 'Wynik_nie_ma_Wr'
+dane1$X1 <- NULL
+dane1$Posiadanie <- NULL
+dane1$Grupa <- NULL
+daneSr <- dane1
+remove(dane1)
+daneSr <- daneSr[-c(9),]
+daneWr <- daneWr[-c(9),]
