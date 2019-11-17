@@ -1,22 +1,21 @@
-#Funkcja do kalkulacji roznic pomiedzy grupami krajow rozwinietych i rozwijajacych sie
-#Wykres
+#Skrypt do kalkulacji roznic pomiedzy grupami krajow rozwinietych i rozwijajacych sie
+#wzgledem deklarowanego posiadania dobr materialnych, srodkow edukacyjnych etc.
 library(haven)
 library(reshape2)
 library(ggplot2)
 
+#Wczytanie glownej ramki wynikow
 #dane <- read_sas("./cy6_ms_cmb_stu_qqq.sas7bdat")
 
 #Funkcja wykorszystywana do podzielenia krajow na grupy
 podziel_grupy_PKB <- function(frame){
   library(dplyr)
   #Podajemy data frame wynikow PISA, otrzynujemy dodatkowa kolumne grupujaca na kraje
-  #slabo, srednio i wysoko rozwiniete wzgledem relacji PKB per capita do sredniech wynikow testu
+  #rozwijajace sie i rozwiniete, wzgledem relacji PKB per capita do sredniech wynikow testu
   #(czyli te ktore zaobserwowalismy na wykresie)
   #Grupy: 1 - rozwijajace sie, 2 - rozwiniete
   
   slabo_rozwiniete <- c("BRA", "MEX", "CHL", "PER", "COL", "IDN", "CRI", "TUR", "URY", "THA")
-  
-  #Kraje srednie dolaczam do rozwinietych po analizie ostatnich wynikow
   wysoko_rozwiniete <- c("NZL", "CAN", "CHE", "AUS", "SWE", "GBR", "DNK", "NOR","USA","JPN")
   
   wyniki_slabe <- filter(frame, CNT %in% slabo_rozwiniete)
@@ -49,6 +48,7 @@ pytanie_ST012 <- function(dane, kolumny){
   return(wynik)
 }
 
+#Anaogicznie dla pytania ST011
 pytanie_ST011 <- function(dane, kolumny){
   library(dplyr)
   
@@ -65,23 +65,9 @@ pytanie_ST011 <- function(dane, kolumny){
   return(wynik)
 }
 
-#pytanie o ksiązki
-pytanie_ST013 <- function(dane){
-  dane1 <- dane[, c("CNT", "ST013Q01TA")]
-  dane1 <- podziel_grupy_PKB(dane1)
-  dane1 <- dane1[, -1]
-  wynik <- group_by(dane1, grupa_rozwoju,ST013Q01TA) %>% count()
-  wynik <- na.omit(wynik)
-  wynik$ST013Q01TA1[wynik$ST013Q01TA==1] <- "[0,10]"
-  wynik$ST013Q01TA1[wynik$ST013Q01TA==2] <- "[11,25]"
-  wynik$ST013Q01TA1[wynik$ST013Q01TA==3] <- "[26,100]"
-  wynik$ST013Q01TA1[wynik$ST013Q01TA==4] <- "[101,200]"
-  wynik$ST013Q01TA1[wynik$ST013Q01TA==5] <- "[201,500]"
-  wynik$ST013Q01TA1[wynik$ST013Q01TA==6] <- "[500,inf]"
-  
-  return(wynik)
-} 
-
+#Wybor kolumn z pytan, niektore kolumny byly niemiarodajne
+#np wiekszosc badanych z obu grup nie posiada e-bookow, wiec 
+#nie zaobserwujemy roznic miedzy grupami
 
 kolumny_st012 <- c(#"ST012Q01TA",
              "ST012Q02TA",
@@ -110,19 +96,9 @@ ST011 <- pytanie_ST011(dane, kolumny_st011)
 
 ST012 <- pytanie_ST012(dane, kolumny_st012)
 
-#ST013 <- pytanie_ST013(dane)
-
-# a1 <- ggplot(ST013,aes(x=reorder(ST013Q01TA1,ST013Q01TA),y=n,fill=grupa_rozwoju))+geom_bar(stat='identity',position='dodge')+
-#   ggtitle("Ilosc ksiazek w domu w zaleznosci od grupy")+
-#   coord_flip()+
-#   ylab("Liczebnosc grupy")+
-#   xlab("")
-
-#a1 to wykres ilosci ksiazek w zaleznosci od grupy rozwoju
-
-
 #DO WYKRESU
 
+#Zmiana czesci wartosci na ujemne zeby zestawic barploty przeciwlegle
 ST011[1, -1] <- lapply(ST011[1, -1], FUN = function(x){-1*x})
 ST012[1, -1] <- lapply(ST012[1, -1], FUN = function(x){-1*x})
 
@@ -130,6 +106,7 @@ to_plot <- cbind(ST011, ST012[,-1])
 to_plot_melt <- melt(to_plot, id.vars = "grupa_rozwoju")
 colnames(to_plot_melt) <- c("grupa_rozwoju", "pytanie", "wartosc")
 
+#Podpisy do slupkow i os zmiennych z pytan
 os_pytan <- to_plot[1, -1]
 os_pytan <- os_pytan[, order(os_pytan[1,])]
 os_pytan <- colnames(os_pytan)
@@ -138,6 +115,7 @@ podpisy <- c("Słownik", "Smartphone", "Ciche miejsce do nauki", "Łazienka",
              "Biurko do nauki", "Własny pokój", "Połączenie z Internetem", "Komputer","Auto",
              "Dzieło sztuki", "Instrument muzyczny", "Tablet", "Oprogramowanie edukacyjne")
 
+#Przygotowanie nakladajacych sie slupkow(w celu wyroznienia roznicy miedzy grupami)
 naloz_gr_2 <- to_plot_melt[to_plot_melt$grupa_rozwoju==2,]
 naloz_gr_2[2,3] <- 6.306474
 
@@ -147,6 +125,7 @@ naloz_gr_1[2,3] <- 8.863257
 gr_2 <- to_plot_melt[to_plot_melt$grupa_rozwoju==2,]
 gr_2[2,3] <- 6.306474
 
+#WYKRES
 
 p <- ggplot(NULL)+
   geom_bar(data = to_plot_melt[to_plot_melt$grupa_rozwoju==1,], aes(x = pytanie, y = wartosc), fill = "#fb5515", 
@@ -164,7 +143,6 @@ p <- ggplot(NULL)+
         legend.position = "none",
         axis.text.y = element_blank(),
         panel.grid.major.x = element_line(colour = "grey", size = 0.3),
-        #panel.ontop = TRUE,
         plot.title = element_text(hjust = 0.5, vjust = 3),
         plot.margin = unit(rep(0.7, 4), "cm"))+
   annotate(geom = "label", x = os_pytan[13:1], y = 0, label = podpisy, vjust = -1, size = 3.5)+
@@ -174,7 +152,7 @@ p <- ggplot(NULL)+
   scale_x_discrete(limits = os_pytan, expand = expand_scale(0.07))+
   ggtitle("Odsetek badanych uczniów, którzy nie mają w domu")
 
-
+#Zapis wykresu
 # ggsave("Nierownosci/not_at_home.png", width = 9, height = 9)
 # 
 # library(svglite)
