@@ -147,7 +147,7 @@ for (i in kolumny_st011) {
 
 write.csv(wynik,"Srednie_wyniki/dana.csv")
 
-
+colnames(dana) <- c("X1","Pytanie","Grupa","Wynik","Posiadanie")
 dane1 <- filter(dana,Grupa=='Wr',Posiadanie=='ma')
 dane2 <- filter(dana,Grupa=='Wr',Posiadanie=='nie ma')
 
@@ -162,13 +162,14 @@ dane1$Grupa <- NULL
 daneWr <- dane1
 remove(dane1)
 
+
 dane1 <- filter(dana,Grupa=='Sr',Posiadanie=='ma')
 dane2 <- filter(dana,Grupa=='Sr',Posiadanie=='nie ma')
 
-names(dane1)[names(dane1) == 'Wynik'] <- 'Wynik_ma_Wr'
-names(dane2)[names(dane2) == 'Wynik'] <- 'Wynik_nie_ma_Wr'
-dane1 <- cbind(dane1,dane2$Wynik_nie_ma_Wr)
-names(dane1)[names(dane1) == 'dane2$Wynik_nie_ma_Wr'] <- 'Wynik_nie_ma_Wr'
+names(dane1)[names(dane1) == 'Wynik'] <- 'Wynik_ma_Sr'
+names(dane2)[names(dane2) == 'Wynik'] <- 'Wynik_nie_ma_Sr'
+dane1 <- cbind(dane1,dane2$Wynik_nie_ma_Sr)
+names(dane1)[names(dane1) == 'dane2$Wynik_nie_ma_Sr'] <- 'Wynik_nie_ma_Sr'
 dane1$X1 <- NULL
 dane1$Posiadanie <- NULL
 dane1$Grupa <- NULL
@@ -176,3 +177,4 @@ daneSr <- dane1
 remove(dane1)
 daneSr <- daneSr[-c(9),]
 daneWr <- daneWr[-c(9),]
+daneSr$Pytanie <- NULL
