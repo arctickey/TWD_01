@@ -3,7 +3,7 @@ dane[9,1] <- "Smartfon"
 colnames(dane) <- c("Pytanie","Rozwinięte_posiada","Rozwinięte_nie_posiada","Nierozwinięte_posiada"
                     ,"Nierozwinięte_nie_posiada")
 names <- c("Nie posiada","Posiada","Nierozwinięte","Rozwinięte")
-names1 <- c("Słownik","Smartfon","Ciche miejsce do nauki","Łazienka","Biurko",
+names1 <- c("Słownik","Smartfon","Ciche miejsce do nauki","Łazienka","Biurko do nauki",
                    "Własny pokój","Połączenie z Internetem","Komputer",
                    "Auto","Dzieło sztuki","Instrument muzyczny","Tablet","Oprogramowanie edukacyjne")
 dane <- dane[order(names1),]
