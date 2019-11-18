@@ -1,13 +1,15 @@
 dane <- cbind(daneWr,daneSr)
+dane[9,1] <- "Smartfon"
 colnames(dane) <- c("Pytanie","Rozwinięte_posiada","Rozwinięte_nie_posiada","Nierozwinięte_posiada"
                     ,"Nierozwinięte_nie_posiada")
+names <- c("Nie posiada","Posiada","Nierozwinięte","Rozwinięte")
 df2 = tidyr::gather(dane,group,value,-Pytanie)
 gg <- ggplot(data = dane) + theme_minimal()+
   geom_point(data = df2, aes(x = value, color = group,y=Pytanie), size = 4)+
   geom_dumbbell( aes(x=Rozwinięte_nie_posiada , xend=Rozwinięte_posiada, y=Pytanie, group=Pytanie),
-                color="#e3e2e1", size=2,colour_x = '#33a02c',colour_xend = "#fc8d62")+ 
+                color="#66c2a5", size=2,colour_x = '#ffd92f',colour_xend = "#1f78b4")+ 
   geom_dumbbell( aes(x=Nierozwinięte_posiada , xend=Nierozwinięte_nie_posiada , y=Pytanie, group=Pytanie),
-                                 color="#e3e2e1", size=2,colour_x = "#1f78b4",colour_xend = "#ffd92f")+
+                                 color="#fc8d62", size=2,colour_x = "#1f78b4",colour_xend = "#ffd92f")+
   labs(x=NULL, 
        y=NULL, 
        title="Wynik w zależności od grupy i posiadania różnych udogodnień") +
@@ -22,8 +24,9 @@ gg <- ggplot(data = dane) + theme_minimal()+
         legend.text = element_text(size=10),
         axis.text.y = element_text(size=12),
         axis.title = element_text(size=18),
+        legend.position = 'top',
         axis.text.x  = element_text(size=12))+
-    scale_color_manual(name = "", values = c("#ffd92f","#1f78b4",'#33a02c',"#fc8d62"))
+    scale_color_manual(name = "",labels=names,values = c("#ffd92f","#1f78b4",'#fc8d62',"#66c2a5"))
 plot(gg)
 
 

@@ -148,7 +148,8 @@ for (i in kolumny_st011) {
 write.csv(wynik,"Srednie_wyniki/dana.csv")
 
 colnames(dana) <- c("X1","Pytanie","Grupa","Wynik","Posiadanie")
-dane1 <- filter(dana,Grupa=='Wr',Posiadanie=='ma')
+
+dane1 <- filter(dana,Grupa=='Wr',Posiadanie=="ma")
 dane2 <- filter(dana,Grupa=='Wr',Posiadanie=='nie ma')
 
 names(dane1)[names(dane1) == 'Wynik'] <- 'Wynik_ma_Wr'
@@ -175,6 +176,4 @@ dane1$Posiadanie <- NULL
 dane1$Grupa <- NULL
 daneSr <- dane1
 remove(dane1)
-daneSr <- daneSr[-c(9),]
-daneWr <- daneWr[-c(9),]
 daneSr$Pytanie <- NULL
