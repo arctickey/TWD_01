@@ -57,12 +57,14 @@ p <- ggplot(data = result %>% gather(wyksztalcenie, srednia, -wyksztalcenie_rodz
   coord_flip()+
   ylab("Średni wynik")+
   xlab("Wykształcenie rodziców")+
-  scale_color_manual("Grupa krajów", labels = c("Rozwijające się", "Rozwinięte"), values = c("#fb5515", "#66c2a5"))+
+  scale_color_manual("Grupa rozwoju", labels = c("Rozwijające się", "Wysoko rozwinięte"), values = c("#fb5515", "#66c2a5"))+
   scale_x_discrete(limits = c("Podstawowe", "Średnie", "Wyższe"))+
-  ggtitle("Średni wynik w grupach krajów względem wykształcenia rodziców uczniów")+
+  ggtitle("Średni wynik w grupach rozwoju względem wykształcenia rodziców uczniów")+
   scale_y_continuous(breaks = scales::pretty_breaks(n = 7), limits = c(360, 520))+
-  theme_light()
-  
+  theme_light()+
+  theme(legend.position = "top")
+
+
 #Zapis wykresu
 # library(svglite)
 # svglite("Nierownosci/wyksztalcenie_rodzicow_srednie.svg", width = 10, height = 6)
